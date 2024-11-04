@@ -1,0 +1,10 @@
+services:
+  fastapi:
+    build: .
+    container_name: pdf_parsers
+    volumes:
+      - ./app:/app
+    environment:
+      - PYTHONUNBUFFERED=1  
+    ports:
+      - "8000:8000"

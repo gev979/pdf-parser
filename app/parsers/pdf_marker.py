@@ -2,7 +2,9 @@ import pytesseract
 import io
 import os
 import json
-
+from flair.data import Sentence
+from flair.models import SequenceTagger
+from flair.splitter import SegtokSentenceSplitter
 from PIL import Image
 from marker.convert import convert_single_pdf
 from marker.models import load_all_models
@@ -35,6 +37,30 @@ async def parse_with_pdf_marker(file):
     with open(text_file, "w") as f:
         f.write(full_text)
 
+    # Process full_text with Flair for NER
+    # Load the Flair model for NER
+    tagger = SequenceTagger.load("ner-ontonotes")
+    # initialize sentence splitter
+    splitter = SegtokSentenceSplitter()
+    # use splitter to split text into list of sentences
+    sentences = splitter.split(full_text)
+    tagger.predict(sentences)
+    
+    # Extract labels and their tags
+    labels = []
+    for sentence in sentences:
+        for label in sentence.get_labels():
+            labels.append({
+                "text": label.data_point.text,
+                "label": label.value,
+                "score": label.score
+            })
+
+    # Save labels to a JSON file
+    labels_file = os.path.join(pdf_result_folder, "labels.json")
+    with open(labels_file, "w") as f:
+        json.dump(labels, f)
+
     # Save each image and store the path
     image_paths = []
     for filename, image in images.items():
@@ -50,5 +76,6 @@ async def parse_with_pdf_marker(file):
     return {
         "text_file": text_file,
         "images_folder": images_folder,
-        "meta_file": meta_file
+        "meta_file": meta_file,
+        "labels_file": labels_file
     }

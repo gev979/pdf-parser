@@ -22,8 +22,7 @@ COPY requirements.txt .
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt && \
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu && \
-    pip install opencv-python
+    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 # Copy the FastAPI application code to the container
 COPY . .

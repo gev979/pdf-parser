@@ -5,6 +5,7 @@ services:
     volumes:
       - ./app:/app
     environment:
-      - PYTHONUNBUFFERED=1  
+      - PYTHONUNBUFFERED=1
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
     ports:
       - "8000:8000"

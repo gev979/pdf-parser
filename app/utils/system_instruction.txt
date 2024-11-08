@@ -1,0 +1,23 @@
+Scan the text file sentence-by-sentence and return a valid JSON response. The JSON response should follow this structure:
+[{ "key": "KEY", "text": "TEXT", "label": "LABEL", "score": NUMBER }, ...]
+JSON Structure:
+"key": Recognize if the text has a "key"/"value" structure based on the content. If there’s no identifiable "key," set this field to null.
+"text": The main text content associated with the key.
+"label": A label indicating the type of content (e.g., "Date," "Name").
+"score": A confidence score (from 0 to 1, represented as a float) indicating the accuracy of the label.
+
+Example Responses:
+For the sentences:
+"Good Afternoon, GERALDINE NADEAU"
+"Last Updated: September 16, 2024 1:02 PM"
+"| Legal Company Name            | Professional gutter installer &more   | Full Name              | Loany Montoya Juarez   |"
+"| Address                       | 23 Oakdale Rd                         |                        |                        |"
+
+Response:
+[
+    { "key": "Last Updated", "text": "September 16, 2024 1:02 PM", "label": "Date", "score": 1 },
+    { "key": null, "text": "GERALDINE NADEAU", "label": "Name", "score": 0.9 }
+    { "key": "Legal Company Name", "text": "Professional gutter installer &more", "label": "Name", "score": 0.8 },
+    { "key": "Full Name", "text": "Loany Montoya Juarez", "label": "Name", "score": 1 },
+    { "key": "Address", "text": "23 Oakdale Rdz", "label": "Address", "score": 1 },
+]

@@ -2,21 +2,21 @@ import pytesseract
 import io
 import os
 import json
-from flair.data import Sentence
-from flair.models import SequenceTagger
-from flair.splitter import SegtokSentenceSplitter
+# from flair.data import Sentence
+# from flair.models import SequenceTagger
+# from flair.splitter import SegtokSentenceSplitter
 from PIL import Image
 from marker.convert import convert_single_pdf
 from marker.models import load_all_models
 from utils.file import upload
 
-RESULT_DIRECTORY = "storage/pdf_marker_results"
+RESULT_DIRECTORY = "storage/results_v1"
 
 # Ensure the PDF and result directories exist
 os.makedirs(RESULT_DIRECTORY, exist_ok=True)
 
 async def parse_with_pdf_marker(file):
-    file_location, unique_folder_name = await upload(file)
+    file_location, unique_folder_name = await upload(file, RESULT_DIRECTORY)
 
     # Call the PDF conversion function
     fpath = file_location
@@ -37,29 +37,29 @@ async def parse_with_pdf_marker(file):
     with open(text_file, "w") as f:
         f.write(full_text)
 
-    # Process full_text with Flair for NER
-    # Load the Flair model for NER
-    tagger = SequenceTagger.load("ner-ontonotes")
-    # initialize sentence splitter
-    splitter = SegtokSentenceSplitter()
-    # use splitter to split text into list of sentences
-    sentences = splitter.split(full_text)
-    tagger.predict(sentences)
-    
-    # Extract labels and their tags
-    labels = []
-    for sentence in sentences:
-        for label in sentence.get_labels():
-            labels.append({
-                "text": label.data_point.text,
-                "label": label.value,
-                "score": label.score
-            })
+    # # Process full_text with Flair for NER
+    # # Load the Flair model for NER
+    # tagger = SequenceTagger.load("ner-ontonotes")
+    # # initialize sentence splitter
+    # splitter = SegtokSentenceSplitter()
+    # # use splitter to split text into list of sentences
+    # sentences = splitter.split(full_text)
+    # tagger.predict(sentences)
 
-    # Save labels to a JSON file
-    labels_file = os.path.join(pdf_result_folder, "labels.json")
-    with open(labels_file, "w") as f:
-        json.dump(labels, f)
+    # # Extract labels and their tags
+    # labels = []
+    # for sentence in sentences:
+    #     for label in sentence.get_labels():
+    #         labels.append({
+    #             "text": label.data_point.text,
+    #             "label": label.value,
+    #             "score": label.score
+    #         })
+
+    # # Save labels to a JSON file
+    # labels_file = os.path.join(pdf_result_folder, "labels.json")
+    # with open(labels_file, "w") as f:
+    #     json.dump(labels, f)
 
     # Save each image and store the path
     image_paths = []
@@ -77,5 +77,5 @@ async def parse_with_pdf_marker(file):
         "text_file": text_file,
         "images_folder": images_folder,
         "meta_file": meta_file,
-        "labels_file": labels_file
+        # "labels_file": labels_file
     }

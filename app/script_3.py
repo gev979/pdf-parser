@@ -9,7 +9,7 @@ from flair.embeddings import WordEmbeddings, StackedEmbeddings
 
 async def main():
     # define columns
-    columns = {0: 'text', 1: 'pos', 2: 'ner'}
+    columns = {0: 'text', 1: 'ner'}
 
     # this is the folder in which train, test and dev files reside
     data_folder = 'resources/train'

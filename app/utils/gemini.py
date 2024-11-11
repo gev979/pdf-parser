@@ -13,7 +13,7 @@ generation_config = {
 }
 
 # Open the file in read mode
-with open('utils/system_instruction.txt', 'r') as file:
+with open('system_instruction.txt', 'r') as file:
     # Read the contents of the file
     system_instruction = file.read()
 

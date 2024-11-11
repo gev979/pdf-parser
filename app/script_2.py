@@ -7,6 +7,7 @@ import shutil
 import json
 
 from utils.gemini import scan_txt
+from utils.parse_json import parse_json
 
 async def main():
     source_dir = "storage/results_v1"
@@ -17,6 +18,9 @@ async def main():
     for dir in os.listdir(source_dir):
         source_folder = os.path.join(source_dir, dir)
         destination_folder = os.path.join(directory, dir)
+
+        if os.path.isdir(destination_folder):
+            continue
 
         for item in os.listdir(source_folder):
             if item not in ['images', 'file.pdf', 'full_text.txt']:
@@ -34,14 +38,19 @@ async def main():
 
         file_path = os.path.join(destination_folder, 'full_text.txt')
 
+        print("AI parsing:", dir, '\n')
         result = scan_txt(file_path)
         print(result)
+        result = parse_json(result)
+
         if result is not None:
             json_path = os.path.join(destination_folder, 'output.json')
             # Save out_meta to a JSON file
             with open(json_path, "w") as f:
-                json.dump(json.loads(result), f)
-        
-        break
+                json.dump(result, f)
+        else:
+            break
+    
+        await asyncio.sleep(10)
 
 asyncio.run(main())

@@ -81,3 +81,6 @@ debug.log
 # MyPy
 .mypy_cache/
 dmypy.json
+
+system_instruction.txt
+.DS_Store

@@ -2,6 +2,14 @@ services:
   fastapi:
     build: .
     container_name: pdf_parsers
+    deploy:
+      resources:
+        limits:
+          memory: 12g
+        reservations:
+          memory: 8g         
+    mem_limit: 12g          
+    memswap_limit: 24g 
     volumes:
       - ./app:/app
     environment:

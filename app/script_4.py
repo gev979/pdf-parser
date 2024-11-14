@@ -34,28 +34,55 @@ def main():
 
     train_dir = 'resources/train'
     paths = [
-        train_dir + '/train.txt', 
-        train_dir + '/dev.txt', 
-        train_dir + '/test.txt'
+        os.path.join(train_dir, 'train.txt'),
+        os.path.join(train_dir, 'dev.txt'),
+        os.path.join(train_dir, 'test.txt')
     ]
-    for file_path in paths:
-        with open(file_path, 'w') as file:
-            pass    
+
+    # Create the directory if it doesn't exist
+    if not os.path.exists(train_dir):
+        os.makedirs(train_dir)
+
+    # Create the files if they don't exist
+    for path in paths:
+        with open(path, 'w') as file:
+            pass
+
+    base_path = paths[0]
 
     for i, dir in enumerate(dirs):
         json_path = os.path.join(directory, dir, 'output.json')
-        
-        if i < dirs_length - 10:
-            path = paths[0]
-        elif i < dirs_length - 3:
-            path = paths[1]
-        else:
-            path = paths[2]
 
         with open(json_path, 'r') as file:
             json_data = json.load(file)
-        
-        with open(path, "a") as file:
+
+        if i < dirs_length - 5 and i > dirs_length - 10:
+            with open(paths[1], "a") as file:
+                for entry in json_data["meta"]:
+                    label = entry.get("label", None)
+                    text = entry.get("text", None)
+                    key = entry.get("key", None)
+
+                    formatted_text = convert_to_iob(key, text, label)
+                    for line in formatted_text:
+                        file.write(line + "\n")
+
+                    file.write("\n")
+
+        elif i >= dirs_length - 3:
+            with open(paths[2], "a") as file:
+                for entry in json_data["meta"]:
+                    label = entry.get("label", None)
+                    text = entry.get("text", None)
+                    key = entry.get("key", None)
+
+                    formatted_text = convert_to_iob(key, text, label)
+                    for line in formatted_text:
+                        file.write(line + "\n")
+
+                    file.write("\n")
+
+        with open(base_path, "a") as file:
             for entry in json_data["meta"]:
                 label = entry.get("label", None)
                 text = entry.get("text", None)

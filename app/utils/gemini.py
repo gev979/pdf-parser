@@ -2,28 +2,28 @@ import re
 import os
 import google.generativeai as genai
 
-api_key = os.environ['GEMINI_API_KEY']
-genai.configure(api_key=api_key)
+def scan_txt(file_path, key):
+    api_key = os.environ[f'GEMINI_API_KEY_{key}']
+    genai.configure(api_key=api_key)
 
-# Create the model
-generation_config = {
-  "temperature": 1,
-  "max_output_tokens": 8192,
-  "response_mime_type": "application/json",
-}
+    # Create the model
+    generation_config = {
+        "temperature": 1,
+        "max_output_tokens": 8192,
+        "response_mime_type": "application/json",
+    }
 
-# Open the file in read mode
-with open('system_instruction.txt', 'r') as file:
-    # Read the contents of the file
-    system_instruction = file.read()
+    # Open the file in read mode
+    with open('system_instruction.txt', 'r') as file:
+        # Read the contents of the file
+        system_instruction = file.read()
 
-model = genai.GenerativeModel(
-  model_name="gemini-1.5-flash",
-  generation_config=generation_config,
-  system_instruction=system_instruction
-)
+    model = genai.GenerativeModel(
+        model_name="gemini-1.5-flash",
+        generation_config=generation_config,
+        system_instruction=system_instruction
+    )
 
-def scan_txt(file_path):
     # Read and process the file
     with open(file_path, 'r') as file:
         lines = file.readlines()

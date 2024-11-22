@@ -7,18 +7,24 @@ from marker.convert import convert_single_pdf
 from marker.models import load_all_models
 from utils.file import upload
 
-RESULT_DIRECTORY = "storage/results_v1"
+RESULT_DIRECTORY = "storage/results"
 
 # Ensure the PDF and result directories exist
 os.makedirs(RESULT_DIRECTORY, exist_ok=True)
 
 async def parse_with_pdf_marker(file):
-    file_location, unique_folder_name = await upload(file, RESULT_DIRECTORY)
+    upload_result = await upload(file, RESULT_DIRECTORY)
+
+    if upload_result is None:
+        return None
+
+    file_location, unique_folder_name = upload_result
+
+    print(file_location)
 
     # Call the PDF conversion function
-    fpath = file_location
     model_lst = load_all_models()
-    full_text, images, out_meta = convert_single_pdf(fpath, model_lst)
+    full_text, images, out_meta = convert_single_pdf(file_location, model_lst)
 
     # Create a unique folder for this PDF's results without the file extension
     pdf_result_folder = os.path.join(RESULT_DIRECTORY, unique_folder_name)

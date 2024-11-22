@@ -4,6 +4,8 @@ from flair.embeddings import WordEmbeddings, FlairEmbeddings, StackedEmbeddings
 from flair.models import SequenceTagger
 from flair.trainers import ModelTrainer
 
+import torch
+torch.cuda.empty_cache()
 
 def main():
     # define columns
@@ -14,10 +16,10 @@ def main():
 
     # init a corpus using column format, data folder and the names of the train, dev and test files
     corpus: Corpus = ColumnCorpus(data_folder, columns,
-                                train_file='train.txt',
-                                test_file='test.txt',
-                                dev_file='dev.txt')
-                            
+                                  train_file='train.txt',
+                                  test_file='test.txt',
+                                  dev_file='dev.txt')
+
     # 2. what label do we want to predict?
     label_type = 'ner'
 
@@ -44,8 +46,9 @@ def main():
 
     # 7. run fine-tuning
     trainer.train('resources/taggers/ner',
-                    learning_rate=0.1,
-                    mini_batch_size=32,
-                    max_epochs=150)
+                  learning_rate=0.1,
+                  mini_batch_size=8,
+                  max_epochs=150)
+
 
 main()

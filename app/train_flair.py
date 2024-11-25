@@ -47,7 +47,7 @@ def main():
     # 7. run fine-tuning
     trainer.train('resources/taggers/ner',
                   learning_rate=0.1,
-                  mini_batch_size=8,
+                  mini_batch_size=4,
                   max_epochs=150)
 
 

@@ -8,6 +8,9 @@ def convert_to_uppercase_with_underscores(word):
 def convert_to_iob(key, text, label):
     formatted_words = []
 
+    if not isinstance(label, str):
+        return formatted_words
+
     if isinstance(key, str):
         key_words = key.split()
         for i, word in enumerate(key_words):

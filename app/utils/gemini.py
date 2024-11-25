@@ -2,8 +2,10 @@ import re
 import os
 import google.generativeai as genai
 
+keys = ["", "", "", ""]
+
 def scan_txt(file_path, key):
-    api_key = os.environ[f'GEMINI_API_KEY_{key}']
+    api_key = keys[key - 1]
     genai.configure(api_key=api_key)
 
     # Create the model

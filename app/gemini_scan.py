@@ -10,13 +10,13 @@ async def main():
     source_dir = "storage/results"
 
     # Iterate through files in the folder
-    for index, dir in enumerate(os.listdir(source_dir)):
+    for index, dirc in enumerate(os.listdir(source_dir)):
         key = index % 4 + 1
 
-        source_folder = os.path.join(source_dir, dir)
+        source_folder = os.path.join(source_dir, dirc)
         file_path = os.path.join(source_folder, 'full_text.txt')
 
-        print("AI parsing:", dir)
+        print("AI parsing:", dirc)
         print("Number:", index + 1, "\n")
 
         scan_text = scan_txt(file_path, key)

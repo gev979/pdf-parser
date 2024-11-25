@@ -12,8 +12,8 @@ def main():
     directory = 'storage/results_v2'
     dirs = os.listdir(directory)
 
-    for dir in dirs:
-        full_dir = os.path.join(directory, dir)
+    for dirc in dirs:
+        full_dir = os.path.join(directory, dirc)
         text_file_path = os.path.join(full_dir, 'full_text.txt')
 
         # Read the entire content of the file

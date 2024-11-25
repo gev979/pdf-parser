@@ -10,9 +10,9 @@ async def upload(file, directory):
         # Create a unique filename without the file extension for the folder
         base_filename, file_extension = os.path.splitext(original_filename)
 
-        dir = os.path.join(directory, base_filename)
-        os.makedirs(dir, exist_ok=True)
-        file_location = os.path.join(dir, "file" + file_extension)
+        dirc = os.path.join(directory, base_filename)
+        os.makedirs(dirc, exist_ok=True)
+        file_location = os.path.join(dirc, "file" + file_extension)
 
         # Save the uploaded PDF file to the pdf directory
         with open(file_location, "wb") as pdf_file:

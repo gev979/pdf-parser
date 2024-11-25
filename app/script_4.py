@@ -17,20 +17,21 @@ def convert_to_iob(key, text, label):
             if i == 0:
                 formatted_words.append(f"{word} B-{convert_to_uppercase_with_underscores(label)}-K")
             else:
-                formatted_words.append(f"{word} I-{convert_to_uppercase_with_underscores(label)}-K") 
+                formatted_words.append(f"{word} I-{convert_to_uppercase_with_underscores(label)}-K")
 
     if isinstance(text, str):
-        text_words = text.split()  
+        text_words = text.split()
         for i, word in enumerate(text_words):
             if i == 0:
                 formatted_words.append(f"{word} B-{convert_to_uppercase_with_underscores(label)}-V")
             else:
-                formatted_words.append(f"{word} I-{convert_to_uppercase_with_underscores(label)}-V")    
-    
+                formatted_words.append(f"{word} I-{convert_to_uppercase_with_underscores(label)}-V")
+
     return formatted_words
 
+
 def main():
-    directory = 'storage/results_v2'
+    directory = 'storage/results'
 
     dirs = os.listdir(directory)
     dirs_length = len(dirs)
@@ -53,13 +54,13 @@ def main():
 
     base_path = paths[0]
 
-    for i, dir in enumerate(dirs):
-        json_path = os.path.join(directory, dir, 'output.json')
+    for i, dirc in enumerate(dirs):
+        json_path = os.path.join(directory, dirc, 'gemini.json')
 
         with open(json_path, 'r') as file:
             json_data = json.load(file)
 
-        if i < dirs_length - 5 and i > dirs_length - 10:
+        if dirs_length - 5 > i > dirs_length - 10:
             with open(paths[1], "a") as file:
                 for entry in json_data["meta"]:
                     label = entry.get("label", None)

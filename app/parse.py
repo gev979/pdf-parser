@@ -19,8 +19,8 @@ async def main():
 
             file_exist = False
             # Iterate through files in the folder
-            for dir in os.listdir("storage/results"):
-                if base_name in dir:
+            for dirc in os.listdir("storage/results"):
+                if base_name in dirc:
                     file_exist = True  # File exists with the given base name and a UUID
                     break
 
